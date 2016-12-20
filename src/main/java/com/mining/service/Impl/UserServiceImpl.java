@@ -10,6 +10,7 @@ import com.mining.dao.UserDAO;
 import com.mining.exception.MiningException;
 import com.mining.model.User;
 import com.mining.model.JSON.UserInfo;
+import com.mining.service.MailService;
 import com.mining.service.UserService;
 
 @Service("userServiceImpl")
@@ -17,18 +18,21 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserDAO userDAOImpl;
+	
+	@Autowired
+	private MailService mailServiceImpl;
 
 	@Autowired
 	private MiningBO miningBO;
 
 	public String saveUser(UserInfo userInfo) throws MiningException {
-		System.out.println("MiningServiceImpl - saveUser method starts");
-		System.out.println("MiningServiceImpl - saveUser method ends");
+		System.out.println("UserServiceImpl - saveUser method starts");
+		System.out.println("UserServiceImpl - saveUser method ends");
 		return userDAOImpl.saveUser(processUserInfo(userInfo));
 	}
 
 	private User processUserInfo(UserInfo userInfo) {
-		System.out.println("MiningServiceImpl - processUserInfo method starts");
+		System.out.println("UserServiceImpl - processUserInfo method starts");
 		User user = new User();
 		if (null != userInfo) {
 			user.setUserName(userInfo.getUserName());
@@ -39,14 +43,26 @@ public class UserServiceImpl implements UserService {
 			user.setCreatedBy(userInfo.getUserName());
 			user.setCreationDate(new Date());
 		}
-		System.out.println("MiningServiceImpl - processUserInfo method starts");
+		System.out.println("UserServiceImpl - processUserInfo method starts");
 		return user;
 	}
 
 	public String loginUser(UserInfo userInfo) throws MiningException {
-		System.out.println("MiningServiceImpl - loginUser method starts");
-		System.out.println("MiningServiceImpl - loginUser method ends");
+		System.out.println("UserServiceImpl - loginUser method starts");
+		System.out.println("UserServiceImpl - loginUser method ends");
 		return miningBO.loginUser(userInfo);
+	}
+
+	public String forgotPassword(UserInfo userInfo) throws MiningException {		
+		System.out.println("UserServiceImpl - processUserInfo method starts");
+		String res = "failed";
+		UserInfo userInfoFromDB = userDAOImpl.forgotPassword(userInfo);
+		if(null != userInfoFromDB) {
+			mailServiceImpl.sendEmail(userInfoFromDB);
+			res = "success";
+		}		
+		System.out.println("UserServiceImpl - processUserInfo method starts");
+		return res;
 	}
 
 }

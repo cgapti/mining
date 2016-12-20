@@ -28,9 +28,11 @@ public class UserDAOImpl extends AbstractDao<Integer, User> implements
 	public UserInfo loginUser(UserInfo userInfo) throws MiningException {
 
 		UserInfo userInfoRes = null;
+		Session session = null;
+		Transaction trans = null;
 		try {
-			Session session = getSession();
-			Transaction trans = session.beginTransaction();
+			session = getSession();
+			trans = session.beginTransaction();
 			String sql = "SELECT USER_NAME, USER_PASSWORD FROM TBL_USER_REGISTRATION WHERE USER_NAME= '"
 					+ userInfo.getUserName() + "'";
 			SQLQuery query = session.createSQLQuery(sql);
@@ -43,8 +45,36 @@ public class UserDAOImpl extends AbstractDao<Integer, User> implements
 			}
 			trans.commit();
 		} catch (Exception e) {
+			trans.rollback();
 			throw new MiningException(
-					"Error occured while fetching the data from DB");
+					"Error occured while fetching the data from DB", e.getMessage());
+		}
+		return userInfoRes;
+	}
+
+	public UserInfo forgotPassword(UserInfo userInfo) throws MiningException {
+		UserInfo userInfoRes = null;
+		Session session = null;
+		Transaction trans = null;
+		try {
+			session = getSession();
+			trans = session.beginTransaction();
+			String sql = "SELECT USER_NAME, USER_PASSWORD FROM TBL_USER_REGISTRATION WHERE EMAIL= '"
+					+ userInfo.getEmail() + "'";
+			SQLQuery query = session.createSQLQuery(sql);
+			List<Object[]> results = query.list();
+			if (null != results && !results.isEmpty()) {
+				userInfoRes = new UserInfo();
+				Object[] row = results.get(0);
+				userInfoRes.setUserName(row[0].toString());
+				userInfoRes.setPassword(row[1].toString());
+				userInfoRes.setEmail(userInfo.getEmail());
+			}
+			trans.commit();
+		} catch (Exception e) {
+			trans.rollback();
+			throw new MiningException(
+					"Error occured while fetching the data from DB", e.getMessage());
 		}
 		return userInfoRes;
 	}

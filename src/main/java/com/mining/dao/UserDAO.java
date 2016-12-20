@@ -8,6 +8,7 @@ public interface UserDAO {
 	
 	String saveUser(User user)throws MiningException;
 	UserInfo loginUser(UserInfo userInfo)throws MiningException;
+	UserInfo forgotPassword(UserInfo userInfo)throws MiningException;
 	
 
 }

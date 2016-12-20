@@ -9,4 +9,5 @@ public interface UserService {
 
 	String loginUser(UserInfo user)throws MiningException;
 
+	String forgotPassword(UserInfo user)throws MiningException;
 }

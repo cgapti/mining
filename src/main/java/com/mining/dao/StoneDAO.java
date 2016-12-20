@@ -5,7 +5,6 @@ import com.mining.model.Stone;
 
 public interface StoneDAO {
 	
-	String saveStoneDetails(Stone stone)throws MiningException;
-	
+	String saveStoneDetails(Stone stone)throws MiningException;	
 
 }

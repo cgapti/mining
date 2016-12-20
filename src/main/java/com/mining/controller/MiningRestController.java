@@ -1,15 +1,22 @@
 package com.mining.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mining.bo.MiningBO;
 import com.mining.exception.MiningException;
+import com.mining.model.JSON.StoneImageInfo;
 import com.mining.model.JSON.StoneInfo;
 import com.mining.model.JSON.UserInfo;
 import com.mining.model.JSON.WorkOrderInfo;
@@ -85,4 +92,53 @@ public class MiningRestController {
 		System.out.println("MiningRestController -  createStoneDetails method ends");
 		return new ResponseEntity<String>(flag, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/getusers", method = RequestMethod.GET, headers = "Accept=application/json")
+	public ResponseEntity<List<UserInfo>> getUsers()
+			throws MiningException {
+		System.out
+				.println("MiningRestController - getUsers method starts");
+		List<UserInfo> userList = new ArrayList<UserInfo>();
+		UserInfo userInfo = new UserInfo();
+		userInfo.setUserName("malli");
+		userInfo.setPassword("pwd123");
+		userInfo.setPhoneNumber("123456789");
+		userInfo.setEmail("mmm@gmail.com");
+		userInfo.setRole("Admin");
+		userList.add(userInfo);
+		System.out
+				.println("MiningRestController -  getUsers method ends");
+		return new ResponseEntity<List<UserInfo>>(userList, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/forgotpassword", method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<String> forgotPassword(@RequestBody UserInfo userInfo)
+			throws MiningException {
+		System.out
+				.println("MiningRestController - forgotPassword method starts");
+		String flag = "failed";
+		if (null != userInfo) {
+			flag = userServiceImpl.forgotPassword(userInfo);
+		}
+		System.out.println("MiningRestController -  forgotPassword method ends");
+		return new ResponseEntity<String>(flag, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/image", method = RequestMethod.POST, headers = "multipart/form-data")
+	public ResponseEntity<String> storeImage(@RequestParam("file") MultipartFile file)
+			throws MiningException, IOException {
+		System.out
+				.println("MiningRestController - forgotPassword method starts");
+		String flag = "failed";
+		if (!file.isEmpty()) {
+			byte[] image = file.getBytes();
+			StoneImageInfo stoneImageInfo = new StoneImageInfo();
+			stoneImageInfo.setImgeName(file.getOriginalFilename());
+			stoneImageInfo.setImage(image);
+			flag = stoneServiceImpl.saveStoneImage(stoneImageInfo);
+		}
+		System.out.println("MiningRestController -  forgotPassword method ends");
+		return new ResponseEntity<String>(flag, HttpStatus.OK);
+	}
+	
 }
