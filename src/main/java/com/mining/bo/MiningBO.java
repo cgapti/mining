@@ -18,6 +18,7 @@ public class MiningBO {
 		System.out.println("MiningDAOImpl - saveUser method starts");
 		String res = "failed";
 		UserInfo userInfoFromDB = userDAOImpl.loginUser(userInfo);
+		// Checking null value
 		if (userInfoFromDB != null && userInfo != null) {
 			String userName = userInfoFromDB.getUserName();
 			String password = userInfoFromDB.getPassword();
