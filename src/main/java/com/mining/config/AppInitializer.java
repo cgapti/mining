@@ -21,10 +21,10 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		return new String[] { "/" };
 	}
 	
-	@Override
+	/*@Override
     protected Filter[] getServletFilters() {
     	Filter [] singleton = { new MSFilter() };
     	return singleton;
-	}
+	}*/
 
 }

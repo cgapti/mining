@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,6 +41,7 @@ public class MiningRestController {
 	@Autowired
 	private MiningBO miningBO;
 
+	@CrossOrigin(origins = "*", maxAge = 3600)
 	@RequestMapping(value = "/register", method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createCustomer(@RequestBody UserInfo user)
 			throws MiningException {
@@ -53,7 +55,8 @@ public class MiningRestController {
 				.println("MiningRestController -  createCustomer method ends");
 		return new ResponseEntity<String>(flag, HttpStatus.OK);
 	}
-
+	
+	@CrossOrigin(origins = "*", maxAge = 3600)
 	@RequestMapping(value = "/login", method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> loginCustomer(@RequestBody UserInfo user)
 			throws MiningException {
@@ -67,6 +70,7 @@ public class MiningRestController {
 		return new ResponseEntity<String>(flag, HttpStatus.OK);
 	}
 	
+	@CrossOrigin(origins = "*", maxAge = 3600)
 	@RequestMapping(value = "/workorder/create", method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createWorkOrder(@RequestBody WorkOrderInfo workOrderInfo)
 			throws MiningException {
@@ -80,6 +84,7 @@ public class MiningRestController {
 		return new ResponseEntity<String>(flag, HttpStatus.OK);
 	}
 
+	@CrossOrigin(origins = "*", maxAge = 3600)
 	@RequestMapping(value = "/stone/create", method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createStoneDetails(@RequestBody StoneInfo stoneInfo)
 			throws MiningException {
@@ -93,6 +98,7 @@ public class MiningRestController {
 		return new ResponseEntity<String>(flag, HttpStatus.OK);
 	}
 	
+	@CrossOrigin(origins = "*", maxAge = 3600)
 	@RequestMapping(value = "/getusers", method = RequestMethod.GET, headers = "Accept=application/json")
 	public ResponseEntity<List<UserInfo>> getUsers()
 			throws MiningException {
@@ -111,6 +117,7 @@ public class MiningRestController {
 		return new ResponseEntity<List<UserInfo>>(userList, HttpStatus.OK);
 	}
 	
+	@CrossOrigin(origins = "*", maxAge = 3600)
 	@RequestMapping(value = "/forgotpassword", method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> forgotPassword(@RequestBody UserInfo userInfo)
 			throws MiningException {
@@ -124,6 +131,7 @@ public class MiningRestController {
 		return new ResponseEntity<String>(flag, HttpStatus.OK);
 	}
 	
+	@CrossOrigin(origins = "*", maxAge = 3600)
 	@RequestMapping(value = "/image", method = RequestMethod.POST, headers = "multipart/form-data")
 	public ResponseEntity<String> storeImage(@RequestParam("file") MultipartFile file)
 			throws MiningException, IOException {
