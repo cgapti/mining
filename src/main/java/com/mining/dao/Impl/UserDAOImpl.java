@@ -5,6 +5,8 @@ import java.util.List;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.mining.dao.AbstractDao;
@@ -12,21 +14,28 @@ import com.mining.dao.UserDAO;
 import com.mining.exception.MiningException;
 import com.mining.model.User;
 import com.mining.model.JSON.UserInfo;
+import com.mining.util.MiningConstants;
 
 @Repository("userDAOImpl")
 public class UserDAOImpl extends AbstractDao<Integer, User> implements
 		UserDAO {
-
+	final static Logger logger = LoggerFactory
+			.getLogger(UserDAOImpl.class);
+	
 	public String saveUser(User user) throws MiningException {
-		System.out.println("MiningDAOImpl - saveUser method starts");
+		logger.debug("saveUser method starts");
 		saveOrUpdate(user);
-		System.out.println("MiningDAOImpl - saveUser method starts");
-		return "success";
+		logger.debug("saveUser method ends");
+		return MiningConstants.success;
 	}
 
+	/**
+	 * loginUser
+	 * 
+	 */
 	@SuppressWarnings("unchecked")
 	public UserInfo loginUser(UserInfo userInfo) throws MiningException {
-
+		logger.debug("loginUser method starts");
 		UserInfo userInfoRes = null;
 		Session session = null;
 		Transaction trans = null;
@@ -46,13 +55,22 @@ public class UserDAOImpl extends AbstractDao<Integer, User> implements
 			trans.commit();
 		} catch (Exception e) {
 			trans.rollback();
+			logger.error(
+					"Error occured while fetching the data from DB", e.getMessage());
 			throw new MiningException(
 					"Error occured while fetching the data from DB", e.getMessage());
 		}
+		logger.debug("loginUser method ends");
 		return userInfoRes;
 	}
-
+	
+	/**
+	 * forgotPassword
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
 	public UserInfo forgotPassword(UserInfo userInfo) throws MiningException {
+		logger.debug("forgotPassword method starts");
 		UserInfo userInfoRes = null;
 		Session session = null;
 		Transaction trans = null;
@@ -73,9 +91,12 @@ public class UserDAOImpl extends AbstractDao<Integer, User> implements
 			trans.commit();
 		} catch (Exception e) {
 			trans.rollback();
+			logger.error(
+					"Error occured while fetching the data from DB", e.getMessage());
 			throw new MiningException(
 					"Error occured while fetching the data from DB", e.getMessage());
 		}
+		logger.debug("forgotPassword method ends");
 		return userInfoRes;
 	}
 

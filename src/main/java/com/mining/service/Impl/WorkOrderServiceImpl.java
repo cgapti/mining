@@ -2,6 +2,8 @@ package com.mining.service.Impl;
 
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +17,26 @@ import com.mining.service.WorkOrderService;
 public class WorkOrderServiceImpl implements WorkOrderService {
 	@Autowired
 	private WorkOrderDAO workOrderDAOImpl;
-
+	
+	final static Logger logger = LoggerFactory
+			.getLogger(WorkOrderServiceImpl.class);
+	/**
+	 * saveWorkOrder
+	 * 
+	 */
 	public String saveWorkOrder(WorkOrderInfo workOrderInfo)
 			throws MiningException {
-		System.out.println("WorkOrderServiceImpl - saveWorkOrder method starts");
-		System.out.println("WorkOrderServiceImpl - saveWorkOrder method ends");
+		logger.debug("saveWorkOrder method starts");
+		logger.debug("saveWorkOrder method ends");
 		return workOrderDAOImpl.saveWorkOrder(processworkOrderInfo(workOrderInfo));
 	}
-
+	
+	/**
+	 * processworkOrderInfo
+	 * 
+	 */
 	private WorkOrder processworkOrderInfo(WorkOrderInfo workOrderInfo) {
-		System.out.println("WorkOrderServiceImpl - processworkOrderInfo method starts");
+		logger.debug("processworkOrderInfo method starts");
 		WorkOrder workOrder = new WorkOrder();
 		if (null != workOrderInfo) {
 			workOrder.setEmpName(workOrderInfo.getEmpName());
@@ -34,7 +46,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 			workOrder.setCreatedBy(workOrderInfo.getEmpName());
 			workOrder.setCreationDate(new Date());
 		}
-		System.out.println("WorkOrderServiceImpl - processworkOrderInfo method starts");
+		logger.debug("processworkOrderInfo method ends");
 		return workOrder;
 	}
 

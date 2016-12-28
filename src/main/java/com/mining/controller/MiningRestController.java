@@ -1,9 +1,9 @@
 package com.mining.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +24,7 @@ import com.mining.model.JSON.WorkOrderInfo;
 import com.mining.service.StoneService;
 import com.mining.service.UserService;
 import com.mining.service.WorkOrderService;
+import com.mining.util.MiningConstants;
 
 @RestController
 @RequestMapping(value = "/ms")
@@ -40,104 +41,123 @@ public class MiningRestController {
 
 	@Autowired
 	private MiningBO miningBO;
+	
+	final static Logger logger = LoggerFactory.getLogger(MiningRestController.class);
 
+	/**
+	 * customer registration service
+	 * 
+	 * @param user
+	 * @return string
+	 * @throws MiningException
+	 */
 	@CrossOrigin(origins = "*", maxAge = 3600)
 	@RequestMapping(value = "/register", method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createCustomer(@RequestBody UserInfo user)
 			throws MiningException {
-		System.out
-				.println("MiningRestController - createCustomer method starts");
-		String flag = "failed";
+		logger.debug("createCustomer method starts");
+		String flag = MiningConstants.failed;
 		if (null != user) {
 			flag = userServiceImpl.saveUser(user);
 		}
-		System.out
-				.println("MiningRestController -  createCustomer method ends");
+		logger.debug("createCustomer method ends");
 		return new ResponseEntity<String>(flag, HttpStatus.OK);
 	}
 	
+	/**
+	 * customer login service
+	 * 
+	 * @param user
+	 * @return string
+	 * @throws MiningException
+	 */	
 	@CrossOrigin(origins = "*", maxAge = 3600)
 	@RequestMapping(value = "/login", method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> loginCustomer(@RequestBody UserInfo user)
 			throws MiningException {
-		System.out
-				.println("MiningRestController - loginCustomer method starts");
+		logger.debug("loginCustomer method starts");
 		String flag = "failed";
 		if (null != user) {
 			flag = miningBO.loginUser(user);
 		}
-		System.out.println("MiningRestController -  loginCustomer method ends");
+		logger.debug("loginCustomer method ends");
 		return new ResponseEntity<String>(flag, HttpStatus.OK);
 	}
 	
+	/**
+	 * work order service
+	 * 
+	 * @param workOrderInfo
+	 * @return string
+	 * @throws MiningException
+	 */
 	@CrossOrigin(origins = "*", maxAge = 3600)
 	@RequestMapping(value = "/workorder/create", method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createWorkOrder(@RequestBody WorkOrderInfo workOrderInfo)
 			throws MiningException {
-		System.out
-				.println("MiningRestController - createWorkOrder method starts");
-		String flag = "failed";
+		logger.debug("createWorkOrder method starts");
+		String flag = MiningConstants.failed;
 		if (null != workOrderInfo) {
 			flag = workOrderServiceImpl.saveWorkOrder(workOrderInfo);
 		}
-		System.out.println("MiningRestController -  createWorkOrder method ends");
+		logger.debug("createWorkOrder method ends");
 		return new ResponseEntity<String>(flag, HttpStatus.OK);
 	}
 
+	/**
+	 * stone details service
+	 * 
+	 * @param stoneInfo
+	 * @return string
+	 * @throws MiningException
+	 */
 	@CrossOrigin(origins = "*", maxAge = 3600)
 	@RequestMapping(value = "/stone/create", method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createStoneDetails(@RequestBody StoneInfo stoneInfo)
 			throws MiningException {
-		System.out
-				.println("MiningRestController - createStoneDetails method starts");
-		String flag = "failed";
+		logger.debug("createStoneDetails method starts");
+		String flag = MiningConstants.failed;
 		if (null != stoneInfo) {
 			flag = stoneServiceImpl.saveStoneDetails(stoneInfo);
 		}
-		System.out.println("MiningRestController -  createStoneDetails method ends");
+		logger.debug("createStoneDetails method ends");
 		return new ResponseEntity<String>(flag, HttpStatus.OK);
 	}
 	
-	@CrossOrigin(origins = "*", maxAge = 3600)
-	@RequestMapping(value = "/getusers", method = RequestMethod.GET, headers = "Accept=application/json")
-	public ResponseEntity<List<UserInfo>> getUsers()
-			throws MiningException {
-		System.out
-				.println("MiningRestController - getUsers method starts");
-		List<UserInfo> userList = new ArrayList<UserInfo>();
-		UserInfo userInfo = new UserInfo();
-		userInfo.setUserName("malli");
-		userInfo.setPassword("pwd123");
-		userInfo.setPhoneNumber("123456789");
-		userInfo.setEmail("mmm@gmail.com");
-		userInfo.setRole("Admin");
-		userList.add(userInfo);
-		System.out
-				.println("MiningRestController -  getUsers method ends");
-		return new ResponseEntity<List<UserInfo>>(userList, HttpStatus.OK);
-	}
-	
+	/**
+	 * forgot password service
+	 * 
+	 * @param userInfo
+	 * @return string
+	 * @throws MiningException
+	 */
 	@CrossOrigin(origins = "*", maxAge = 3600)
 	@RequestMapping(value = "/forgotpassword", method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> forgotPassword(@RequestBody UserInfo userInfo)
 			throws MiningException {
-		System.out
-				.println("MiningRestController - forgotPassword method starts");
-		String flag = "failed";
+		logger.debug("forgotPassword method starts");
+		String flag = MiningConstants.failed;
 		if (null != userInfo) {
 			flag = userServiceImpl.forgotPassword(userInfo);
 		}
-		System.out.println("MiningRestController -  forgotPassword method ends");
+		logger.debug("forgotPassword method ends");
 		return new ResponseEntity<String>(flag, HttpStatus.OK);
 	}
 	
+	/**
+	 * save image service
+	 * 
+	 * @param file
+	 * @return string
+	 * @throws MiningException
+	 * @throws IOException
+	 */
 	@CrossOrigin(origins = "*", maxAge = 3600)
-	@RequestMapping(value = "/image", method = RequestMethod.POST, headers = "multipart/form-data")
-	public ResponseEntity<String> storeImage(@RequestParam("file") MultipartFile file)
+	@RequestMapping(value = "/image", method = RequestMethod.POST)
+	public ResponseEntity<String> saveImage(@RequestParam("file") MultipartFile file)
 			throws MiningException, IOException {
-		System.out
-				.println("MiningRestController - forgotPassword method starts");
-		String flag = "failed";
+		logger.debug("saveImage method starts");
+		String flag = MiningConstants.failed;
 		if (!file.isEmpty()) {
 			byte[] image = file.getBytes();
 			StoneImageInfo stoneImageInfo = new StoneImageInfo();
@@ -145,7 +165,7 @@ public class MiningRestController {
 			stoneImageInfo.setImage(image);
 			flag = stoneServiceImpl.saveStoneImage(stoneImageInfo);
 		}
-		System.out.println("MiningRestController -  forgotPassword method ends");
+		logger.debug("saveImage method ends");
 		return new ResponseEntity<String>(flag, HttpStatus.OK);
 	}
 	
