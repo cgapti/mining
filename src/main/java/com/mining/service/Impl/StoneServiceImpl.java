@@ -74,7 +74,7 @@ public class StoneServiceImpl implements StoneService {
 		StoneImage stoneImage = new StoneImage();
 		if (null != stoneImageInfo) {
 			stoneImage.setImageName(stoneImageInfo.getImgeName());
-			stoneImage.setImage(stoneImage.getImage());
+			stoneImage.setImage(stoneImageInfo.getImage());
 			stoneImage.setCreationDate(new Date());
 		}
 		logger.debug("processStoneImageInfo method ends");
