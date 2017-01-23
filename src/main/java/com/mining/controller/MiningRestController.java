@@ -159,7 +159,7 @@ public class MiningRestController {
 	 * @throws IOException
 	 */
 	@CrossOrigin(origins = "*", maxAge = 3600)
-	@RequestMapping(value = "/image", method = RequestMethod.POST)
+	@RequestMapping(value = "/image", method = RequestMethod.POST, headers = "Accept=multipart/form-data")
 	public ResponseEntity<String> saveImage(@RequestParam("file") MultipartFile file)
 			throws MiningException, IOException {
 		logger.debug("saveImage method starts");
