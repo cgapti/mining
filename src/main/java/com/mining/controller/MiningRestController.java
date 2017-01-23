@@ -1,6 +1,7 @@
 package com.mining.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 
@@ -174,4 +175,19 @@ public class MiningRestController {
 		return new ResponseEntity<String>(flag, HttpStatus.OK);
 	}
 	
+	/**
+	 * Get all images service
+	 * 
+	 * @return string
+	 * @throws MiningException
+	 */
+	@CrossOrigin(origins = "*", maxAge = 3600)
+	@RequestMapping(value = "/getImages", method = RequestMethod.GET, headers = "Accept=application/json")
+	public ResponseEntity<List<StoneImageInfo>> getAllImages()
+			throws MiningException {
+		logger.debug("getAllImages method starts");
+		List<StoneImageInfo> images = userServiceImpl.getAllImages();	
+		logger.debug("getAllImages method ends");
+		return new ResponseEntity<List<StoneImageInfo>>(images, HttpStatus.OK);
+	}
 }

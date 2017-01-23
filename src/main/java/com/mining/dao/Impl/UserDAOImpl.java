@@ -1,7 +1,9 @@
 package com.mining.dao.Impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -12,7 +14,9 @@ import org.springframework.stereotype.Repository;
 import com.mining.dao.AbstractDao;
 import com.mining.dao.UserDAO;
 import com.mining.exception.MiningException;
+import com.mining.model.StoneImage;
 import com.mining.model.User;
+import com.mining.model.JSON.StoneImageInfo;
 import com.mining.model.JSON.UserInfo;
 import com.mining.util.MiningConstants;
 
@@ -98,6 +102,37 @@ public class UserDAOImpl extends AbstractDao<Integer, User> implements
 		}
 		logger.debug("forgotPassword method ends");
 		return userInfoRes;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<StoneImageInfo> getAllImages() throws MiningException {
+		logger.debug("getAllImages method starts");
+		List<StoneImageInfo> imageList = new ArrayList<StoneImageInfo>();
+		Session session = null;
+		Transaction trans = null;
+		try {
+			session = getSession();
+			trans = session.beginTransaction();
+			Query query = session.createQuery("from StoneImage");//here persistent class name is Emp  
+			List<StoneImage> Querylist = query.list();
+			if(null != Querylist) {
+				for(StoneImage stoneImage : Querylist) {
+					StoneImageInfo stoneImageInfo = new StoneImageInfo();
+					stoneImageInfo.setImgeName(stoneImage.getImageName());
+					stoneImageInfo.setImage(stoneImage.getImage());
+					imageList.add(stoneImageInfo);
+				}
+			}			
+			trans.commit();
+		} catch (Exception e) {
+			trans.rollback();
+			logger.error(
+					"Error occured while fetching the data from DB", e.getMessage());
+			throw new MiningException(
+					"Error occured while fetching the data from DB", e.getMessage());
+		}
+		logger.debug("getAllImages method ends");
+		return imageList;
 	}
 
 }

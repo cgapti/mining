@@ -1,6 +1,7 @@
 package com.mining.service.Impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import com.mining.bo.MiningBO;
 import com.mining.dao.UserDAO;
 import com.mining.exception.MiningException;
 import com.mining.model.User;
+import com.mining.model.JSON.StoneImageInfo;
 import com.mining.model.JSON.UserInfo;
 import com.mining.service.MailService;
 import com.mining.service.UserService;
@@ -84,6 +86,12 @@ public class UserServiceImpl implements UserService {
 		}		
 		logger.debug("forgotPassword method ends");
 		return res;
+	}
+
+	public List<StoneImageInfo> getAllImages() throws MiningException {
+		logger.debug("getAllImages method starts");
+		logger.debug("getAllImages method ends");
+		return userDAOImpl.getAllImages();
 	}
 
 }
