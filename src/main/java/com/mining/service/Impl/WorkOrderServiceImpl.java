@@ -1,6 +1,7 @@
 package com.mining.service.Impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +49,12 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 		}
 		logger.debug("processworkOrderInfo method ends");
 		return workOrder;
+	}
+	
+	public List<WorkOrderInfo> getWorkOrderDetails() throws MiningException {
+		logger.debug("getWorkOrderDetails method starts");
+		logger.debug("getWorkOrderDetails method ends");
+		return workOrderDAOImpl.getWorkOrderDetails();
 	}
 
 }

@@ -174,7 +174,7 @@ public class MiningRestController {
 	/**
 	 * Get all images service
 	 * 
-	 * @return string
+	 * @return List
 	 * @throws MiningException
 	 */
 	@CrossOrigin(origins = "*", maxAge = 3600)
@@ -185,5 +185,37 @@ public class MiningRestController {
 		List<StoneImageInfo> images = userServiceImpl.getAllImages();	
 		logger.debug("getAllImages method ends");
 		return new ResponseEntity<List<StoneImageInfo>>(images, HttpStatus.OK);
+	}
+	
+	/**
+	 * Get all stone details service
+	 * 
+	 * @return List
+	 * @throws MiningException
+	 */
+	@CrossOrigin(origins = "*", maxAge = 3600)
+	@RequestMapping(value = "/getStoneDetails", method = RequestMethod.GET, headers = "Accept=application/json")
+	public ResponseEntity<List<StoneInfo>> getStoneDetails()
+			throws MiningException {
+		logger.debug("getAllImages method starts");
+		List<StoneInfo> stoneList = stoneServiceImpl.getStoneDetails();	
+		logger.debug("getAllImages method ends");
+		return new ResponseEntity<List<StoneInfo>>(stoneList, HttpStatus.OK);
+	}
+	
+	/**
+	 * Get all work order details service
+	 * 
+	 * @return List
+	 * @throws MiningException
+	 */
+	@CrossOrigin(origins = "*", maxAge = 3600)
+	@RequestMapping(value = "/getWorkOrderDetails", method = RequestMethod.GET, headers = "Accept=application/json")
+	public ResponseEntity<List<WorkOrderInfo>> getWorkOrderDetails()
+			throws MiningException {
+		logger.debug("getWorkOrderDetails method starts");
+		List<WorkOrderInfo> woList = workOrderServiceImpl.getWorkOrderDetails();	
+		logger.debug("getWorkOrderDetails method ends");
+		return new ResponseEntity<List<WorkOrderInfo>>(woList, HttpStatus.OK);
 	}
 }

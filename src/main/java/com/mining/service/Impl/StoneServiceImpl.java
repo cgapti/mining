@@ -1,6 +1,7 @@
 package com.mining.service.Impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,6 +80,12 @@ public class StoneServiceImpl implements StoneService {
 		}
 		logger.debug("processStoneImageInfo method ends");
 		return stoneImage;
+	}
+
+	public List<StoneInfo> getStoneDetails() throws MiningException {
+		logger.debug("getStoneDetails method starts");
+		logger.debug("getStoneDetails method ends");
+		return StoneDAOImpl.getStoneDetails();
 	}
 
 }
