@@ -106,8 +106,8 @@
 		<!-- -->
 		<dependency>
 			<groupId>com.oracle.jdbc</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>12.1.0.2</version>
+			<artifactId>ojdbc</artifactId>
+			<version>14</version>
 		</dependency>
 
 		<!-- SLF4J/Logback -->
