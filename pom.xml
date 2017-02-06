@@ -105,9 +105,9 @@
 		</dependency>
 		<!-- -->
 		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc14</artifactId>
-			<version>10.2.0.3.0</version>
+			<groupId>com.github.ferstl</groupId>
+			<artifactId>spring-jdbc-oracle-ojdbc</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 
 		<!-- SLF4J/Logback -->
