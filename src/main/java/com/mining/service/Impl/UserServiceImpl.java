@@ -93,5 +93,12 @@ public class UserServiceImpl implements UserService {
 		logger.debug("getAllImages method ends");
 		return userDAOImpl.getAllImages();
 	}
+	
+	/**
+	 * Method to get the URL from DB
+	 */
+	public String getServerUrl() throws MiningException {
+		return userDAOImpl.getServerUrl();
+	}
 
 }

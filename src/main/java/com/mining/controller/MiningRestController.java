@@ -218,4 +218,20 @@ public class MiningRestController {
 		logger.debug("getWorkOrderDetails method ends");
 		return new ResponseEntity<List<WorkOrderInfo>>(woList, HttpStatus.OK);
 	}
+	
+	/**
+	 * Get server URL
+	 * 
+	 * @return List
+	 * @throws MiningException
+	 */
+	@CrossOrigin(origins = "*", maxAge = 3600)
+	@RequestMapping(value = "/getServerUrl", method = RequestMethod.GET, headers = "Accept=application/json")
+	public ResponseEntity<String> getServerUrl()
+			throws MiningException {
+		logger.debug("get Server Url method starts");
+		String serverUrl = userServiceImpl.getServerUrl();	
+		logger.debug("get Server Url method ends");
+		return new ResponseEntity<String>(serverUrl, HttpStatus.OK);
+	}
 }

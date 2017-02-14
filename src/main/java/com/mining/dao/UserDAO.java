@@ -13,4 +13,5 @@ public interface UserDAO {
 	UserInfo loginUser(UserInfo userInfo)throws MiningException;
 	UserInfo forgotPassword(UserInfo userInfo)throws MiningException;
 	List<StoneImageInfo> getAllImages()throws MiningException;
+	String getServerUrl()throws MiningException;
 }

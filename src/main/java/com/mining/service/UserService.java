@@ -15,4 +15,6 @@ public interface UserService {
 	String forgotPassword(UserInfo user)throws MiningException;
 
 	List<StoneImageInfo> getAllImages()throws MiningException;
+
+	String getServerUrl() throws MiningException;
 }

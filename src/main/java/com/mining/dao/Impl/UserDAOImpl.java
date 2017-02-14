@@ -134,5 +134,28 @@ public class UserDAOImpl extends AbstractDao<Integer, User> implements
 		logger.debug("getAllImages method ends");
 		return imageList;
 	}
+    
+	/**
+	 * Method to get the URl from DB
+	 */
+	public String getServerUrl() throws MiningException {
+		Session session = null;
+		Transaction trans = null;
+		String serverURL;
+		try {
+			session = getSession();
+			trans = session.beginTransaction();
+			String sql = "select url from server_url where application = 'Mining' and active = 'Y'";
+			SQLQuery query = session.createSQLQuery(sql);
+			serverURL = (String) query.list().get(0);
+			trans.commit();
+		} catch (Exception e) {
+			trans.rollback();
+			logger.error("Error occured while fetching the data from DB", e.getMessage());
+			throw new MiningException("Error occured while fetching the data from DB", e.getMessage());
+		}
+		logger.debug("getAllImages method ends");
+		return serverURL;
+	}
 
 }
