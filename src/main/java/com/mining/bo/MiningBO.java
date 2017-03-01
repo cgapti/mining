@@ -30,13 +30,27 @@ public class MiningBO {
 		logger.debug("loginUser method starts");
 		String res = MiningConstants.failed;
 		UserInfo userInfoFromDB = userDAOImpl.loginUser(userInfo);
-		// Checking null value
-		if (userInfoFromDB != null && userInfo != null) {
-			String userName = userInfoFromDB.getUserName();
-			String password = userInfoFromDB.getPassword();
-			if (userName.equals(userInfo.getUserName())
-					&& password.equals(userInfo.getPassword())) {
-				res = MiningConstants.success;
+		logger.debug("userInfoFromDB---"+userInfoFromDB.getStatusName()+"--"+userInfoFromDB.getOrgName() +"---"+userInfoFromDB.getRoleName());
+		if(null!=userInfoFromDB)
+		{
+			if(!userInfoFromDB.getStatusName().equals("") && !("").equals(userInfoFromDB.getOrgName()) &&  !("").equals(userInfoFromDB.getRoleName()))
+			{
+				if("Pending".equals(userInfoFromDB.getStatusName()))
+				{
+					res="User is in Pending Status";
+				}
+				else if("Inactive".equals(userInfoFromDB.getStatusName()))
+				{
+					res="User is in Inactive Status";
+				}
+				else if("Active".equals(userInfoFromDB.getStatusName()))
+				{
+					res="Active User$$$"+userInfoFromDB.getEmail()+"$$$"+userInfoFromDB.getOrgName()+"$$$"+userInfoFromDB.getRoleName();
+				}
+			}
+			else
+			{
+				res="User is in Pending Status";
 			}
 		}
 		logger.debug("loginUser method ends");

@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -54,6 +56,33 @@ public class User implements Serializable {
 
 	@Column(name = "CREATED_BY")
 	private String createdBy;
+
+	@OneToOne
+	@JoinColumn(name="ORG_ID")
+	private Organisation org;
+	@OneToOne
+	@JoinColumn(name="ROLES_ID")
+	private UserRoles roles;
+	
+	@OneToOne
+	@JoinColumn(name="STATUS_ID")
+	private Status userStatus;
+	
+	
+	
+	/**
+	 * @return the userStatus
+	 */
+	public Status getUserStatus() {
+		return userStatus;
+	}
+
+	/**
+	 * @param userStatus the userStatus to set
+	 */
+	public void setUserStatus(Status userStatus) {
+		this.userStatus = userStatus;
+	}
 
 	/**
 	 * @return the id
@@ -175,4 +204,32 @@ public class User implements Serializable {
 		this.createdBy = createdBy;
 	}
 
+	/**
+	 * @return the org
+	 */
+	public Organisation getOrg() {
+		return org;
+	}
+
+	/**
+	 * @param org the org to set
+	 */
+	public void setOrg(Organisation org) {
+		this.org = org;
+	}
+
+	/**
+	 * @return the roles
+	 */
+	public UserRoles getRoles() {
+		return roles;
+	}
+
+	/**
+	 * @param roles the roles to set
+	 */
+	public void setRoles(UserRoles roles) {
+		this.roles = roles;
+	}
+	
 }
