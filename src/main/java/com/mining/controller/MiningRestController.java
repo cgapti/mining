@@ -18,11 +18,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mining.bo.MiningBO;
 import com.mining.exception.MiningException;
+import com.mining.model.JSON.OrganisationInfo;
+import com.mining.model.JSON.StatusInfo;
 import com.mining.model.JSON.StoneImageInfo;
 import com.mining.model.JSON.StoneInfo;
+import com.mining.model.JSON.UserApprovelInfo;
 import com.mining.model.JSON.UserInfo;
+import com.mining.model.JSON.UserRolesInfo;
 import com.mining.model.JSON.WorkOrderInfo;
+import com.mining.service.OrganisationService;
 import com.mining.service.StoneService;
+import com.mining.service.UserRolesService;
 import com.mining.service.UserService;
 import com.mining.service.WorkOrderService;
 import com.mining.util.MiningConstants;
@@ -39,10 +45,15 @@ public class MiningRestController {
 	
 	@Autowired
 	private StoneService stoneServiceImpl;
+	
+	@Autowired
+	private OrganisationService organisationServiceImpl;
 
 	@Autowired
 	private MiningBO miningBO;
 	
+	@Autowired
+	private UserRolesService userRolesServiceImpl;
 	
 	final static Logger logger = LoggerFactory.getLogger(MiningRestController.class);
 
@@ -219,6 +230,85 @@ public class MiningRestController {
 		return new ResponseEntity<List<WorkOrderInfo>>(woList, HttpStatus.OK);
 	}
 	
+	@CrossOrigin(origins="*",maxAge=3600)
+	@RequestMapping(value="/saveOrganisation",method=RequestMethod.POST,headers = "Accept=application/json")
+	public ResponseEntity<String> createOrganisation(@RequestBody OrganisationInfo org) throws MiningException
+	{
+		String flag=MiningConstants.failed;
+		if(org!=null)
+		{
+			flag=organisationServiceImpl.saveOrganisation(org);
+		}
+		return new ResponseEntity<String>(flag, HttpStatus.OK);
+	}
+	
+	@CrossOrigin(origins="*", maxAge=3600)
+	@RequestMapping(value="/getOrganisationList",method=RequestMethod.GET,headers="Accept=application/json")
+	public ResponseEntity<List<OrganisationInfo>> getOrganisationList() throws MiningException
+	{
+		logger.debug("get all organisation values starts");
+	
+		List<OrganisationInfo> orgList=organisationServiceImpl.organisationList();
+		
+		logger.debug("get all organisation values ends");
+		return new ResponseEntity<List<OrganisationInfo>>(orgList,HttpStatus.OK);
+	}
+	
+	@CrossOrigin(origins="*",maxAge=3600)
+	@RequestMapping(value="/getUserRolesList",method=RequestMethod.GET,headers="Accept=application/json")
+	public ResponseEntity<List<UserRolesInfo>> getUserRolesList() throws MiningException
+	{
+		logger.debug("get all user roles values starts ");
+		List<UserRolesInfo> listuserroles=userRolesServiceImpl.getUserRoles();		
+		logger.debug("get all user roles values end" );
+		
+		return new ResponseEntity<List<UserRolesInfo>>(listuserroles,HttpStatus.OK);
+	}
+	
+	@CrossOrigin(origins="*",maxAge=3600)
+	@RequestMapping(value="/saveUserRoles",method=RequestMethod.POST,headers="Accept=application/json")
+	public ResponseEntity<String> saveUserRoles(@RequestBody UserRolesInfo info) throws MiningException
+	{
+		String flag=MiningConstants.failed;
+		if(info!=null)
+		{
+			flag=userRolesServiceImpl.saveUserRoles(info); 
+		}
+		return new ResponseEntity<String>(flag,HttpStatus.OK);
+	}
+	
+	@CrossOrigin(origins="*",maxAge=3600)
+	@RequestMapping(value={"/getApprovalPendingList"},method=RequestMethod.GET,headers="Accept=application/json")
+	//@RequestMapping(value={"/getApprovalPendingList"},method=RequestMethod.GET,headers="Accept=application/json")
+	//public ResponseEntity<List<UserInfo>> getPendingApprovels(@RequestParam(value="searchBy",required=false) String searchBy,@RequestParam(value="searchVal",required=false) String searchVal)throws MiningException
+	public ResponseEntity<List<UserInfo>> getPendingApprovels(@RequestParam(value="searchBy") String searchBy,@RequestParam(value="searchVal") String searchVal)throws MiningException
+	{
+		
+		logger.debug("get pending approvels values starts" +searchBy +"---"+searchVal);
+		List<UserInfo> info=userServiceImpl.getPendingApprovels(searchBy,searchVal);
+		logger.debug("get pending approvels values Ends");
+		return new ResponseEntity<List<UserInfo>>(info,HttpStatus.OK);
+	}
+	
+	@CrossOrigin(origins="*",maxAge=3600)
+	@RequestMapping(value="/saveUserApprovel",method=RequestMethod.POST,headers="Accept=application/json")
+	public ResponseEntity<String> saveUserApprovelValues(@RequestBody UserApprovelInfo appInfo) throws MiningException
+	{
+		String flag=MiningConstants.failed;
+		logger.debug("User approvel values in Mining rest controller starts");
+		flag=userServiceImpl.saveUserApprovel(appInfo);
+		logger.debug("User approvel values in Mining rest controller ends");
+		return new ResponseEntity<String>(flag,HttpStatus.OK);
+	}
+	@CrossOrigin(origins="*",maxAge=3600)
+	@RequestMapping(value="/getStatusInfoValues",method=RequestMethod.GET,headers="Accept=application/json")
+	public ResponseEntity<List<StatusInfo>> getStatusList()throws MiningException
+	{
+		logger.debug("get status details values starts");
+		List<StatusInfo> statusInfos=userServiceImpl.getStatusValues(null);
+		logger.debug("get status details values ends");
+		return new ResponseEntity<List<StatusInfo>>(statusInfos,HttpStatus.OK);
+	}
 	/**
 	 * Get server URL
 	 * 

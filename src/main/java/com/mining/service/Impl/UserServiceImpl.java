@@ -12,7 +12,9 @@ import com.mining.bo.MiningBO;
 import com.mining.dao.UserDAO;
 import com.mining.exception.MiningException;
 import com.mining.model.User;
+import com.mining.model.JSON.StatusInfo;
 import com.mining.model.JSON.StoneImageInfo;
+import com.mining.model.JSON.UserApprovelInfo;
 import com.mining.model.JSON.UserInfo;
 import com.mining.service.MailService;
 import com.mining.service.UserService;
@@ -100,5 +102,22 @@ public class UserServiceImpl implements UserService {
 	public String getServerUrl() throws MiningException {
 		return userDAOImpl.getServerUrl();
 	}
+	@Override
+	public List<UserInfo> getPendingApprovels(String searchBy,String searchVal) throws MiningException {
+		logger.debug("get pending approvels list service impl starts");
+		return userDAOImpl.getPendingApprovels(searchBy,searchVal);
+	}
 
+	@Override
+	public String saveUserApprovel(UserApprovelInfo appInfo)
+			throws MiningException {
+		logger.debug("save user approvel values in user Service Impl");
+		return userDAOImpl.saveUserApprovel(appInfo);
+	}
+
+	@Override
+	public List<StatusInfo> getStatusValues(Integer statusId) throws MiningException {
+		logger.debug("get status values list service impl starts");
+		return userDAOImpl.getStatusValues(statusId);
+	}
 }
